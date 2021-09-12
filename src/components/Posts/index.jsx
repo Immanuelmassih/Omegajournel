@@ -42,7 +42,7 @@ export class Posts extends Component  {
 			               </Link>
 			            </div>
 			            <div className="post-card-content">
-			                <Link to={`/detail/${blog.id}`} className="categorie">{blog.category}</Link>
+			                <Link to={`/detail/${blog.id}`} className="categorie">{blog.category} {blog.id}</Link>
 			                <h5>
 			                    <Link to={`/detail/${blog.id}`}>{blog.title}</Link>
 			                </h5>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Header = () =>  {
+const Header = ({User}) =>  {
    return (
     <nav className="navbar navbar-expand-lg fixed-top">
         <div className="container-fluid">
@@ -20,23 +20,28 @@ const Header = () =>  {
                     <li className="nav-item">
                        <Link to="/blog" className="nav-link">Blog</Link>
                     </li>
-                    <li className="nav-item">
-                       <Link to="/profile" className="nav-link">Profile</Link>
-                    </li>
-                    <li className="nav-item">
-                       <Link to="/login" className="nav-link">Login</Link>
-                    </li>
-    
-                    <li className="nav-item">
-                       <Link to="/register" className="nav-link">Register</Link>
-                    </li> 
+                    {User && 
+                        <li className="nav-item">
+                           <Link to="/profile" className="nav-link">Profile</Link>
+                        </li>
+                    }
+                    {!User && 
+                        <li className="nav-item">
+                           <Link to="/login" className="nav-link">Login</Link>
+                        </li>
+                    }
+                    {!User && 
+                        <li className="nav-item">
+                           <Link to="/register" className="nav-link">Register</Link>
+                        </li> 
+                    }
                     <li className="nav-item">
                        <Link to="/contact" className="nav-link">Contact</Link>
                     </li>
                 </ul>
             </div>
 
-            <div className="navbar-right ml-auto">
+          {/*  <div className="navbar-right ml-auto">
     
                 <div className="search-icon">
                     <i className="icon_search"></i>
@@ -45,7 +50,7 @@ const Header = () =>  {
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-            </div>
+            </div>*/}
         </div>
     </nav>
    );

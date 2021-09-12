@@ -1,36 +1,3 @@
-/* -----------------------------------------------
-				CSS Styles 
---------------------------------------------------
-
-    Template Name: NoonPost. - Personal Blog HTML Template
-    
---------------------------------------------------
-
-Table of Content
-
-    - Global
-    - Helpers
-    - Section
-    - Navigation
-    - Layouts
-    - Widget
-    - Post-card
-    - Post-single
-    - Categorie
-    - Hero
-    - About
-    - Contact 
-    - Footer
-	- Preloader 
-    - Responsive
-    - Dark
-    - RTL
- 
-
------------------------------------ */
-/* -----------------------------------
-		 Global
------------------------------------ */
 * {
   margin: 0;
   padding: 0;
@@ -2767,4 +2734,36 @@ body.rtl {
 
 input.custom_select {
   padding: 10px 20px !important;
+}
+ul.multi_options {
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+ul.multi_options li {
+    display: inline-block;
+    margin: 0 10px;
+    background-color: #f67280;
+    color: #ffffff;
+    padding: 1px 10px;
+    display: -ms-inline-flexbox;
+    font-size: 13px;
+    border-radius: 20px;
+    font-weight: 700 !important;
+    text-transform: capitalize;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    user-select: none;
+    cursor: pointer;
+}
+
+ul.multi_options li a:hover {
+  color:  inherit;
+}
+
+a.customLink {
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #f67280;
 }

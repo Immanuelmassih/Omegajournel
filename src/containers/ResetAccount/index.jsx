@@ -1,6 +1,7 @@
 import React from 'react';
 import Joi from "joi-browser";
 import Form from '../../components/common/form';
+import * as userService from '../../Services/userService';
 
 class ResetAccount extends Form {
 
@@ -15,12 +16,13 @@ class ResetAccount extends Form {
       .label("Password"),
     ConfirmPassword: Joi.string()
       .required()
-      .label("Vonfirm Password")
+      .label("Confirm Password")
   };
 
-  doSubmit = () => {
-    console.log("Submitted");
-    console.log ( this.state.data )
+  doSubmit = async () => {
+    const form = { password : this.state.data.password, ConfirmPassword : this.state.data.ConfirmPassword, id : this.props.match.params.id }
+    const response = await userService.reset(form)
+    console.log ( response.data )
   };
 
   render() {

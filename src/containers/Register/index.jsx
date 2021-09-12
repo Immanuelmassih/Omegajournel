@@ -2,8 +2,8 @@ import React from "react";
 import Form from '../../components/common/form';
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
-import * as userService from '../../FakeServices/userService';
-import auth from "../../FakeServices/authService";
+import * as userService from '../../Services/userService';
+import auth from "../../Services/authService";
 
 class Register extends Form {
 
@@ -33,7 +33,8 @@ class Register extends Form {
   doSubmit  = async () => {
     try {
       const response = await userService.register(this.state.data);
-      auth.loginWithJwt(response);
+      const { data : { response : token } } = response
+      auth.loginWithJwt(token);
       window.location.href = "/subscription"
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {

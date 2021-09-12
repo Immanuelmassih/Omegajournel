@@ -14,13 +14,22 @@ import BlogDetail from './containers/BlogDetail';
 import NotFound from './containers/NotFound';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { getCurrentUser } from './Services/authService';
 import "./App.css";
 
 class App extends Component {
+
+  state = {
+    user : getCurrentUser()
+  }
+
   render() {
+
+    const { user } = this.state
+
     return (
       <div>
-        <Header />
+        <Header User={user} />
         <div className="content">
           <Switch>
             <Route path="/" exact component={Home} />
@@ -31,7 +40,7 @@ class App extends Component {
             <Route path="/profile" component={Profile} />
             <Route path="/subscription" component={Subscription} />
             <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/reset-account" component={ResetAccount} />
+            <Route path="/reset-account/:id" component={ResetAccount} />
             <Route path="/contact" component={Contact} />
             <Route path="/post" component={CreateEditBlog} />
             <Route path="/detail/:id" component={BlogDetail} />
@@ -39,7 +48,7 @@ class App extends Component {
             <Redirect to="/not-found" />
           </Switch>
         </div>
-        <Footer />
+        <Footer User={user} />
       </div>
     );
   }

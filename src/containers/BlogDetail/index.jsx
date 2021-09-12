@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Comments from '../../components/Comments/'
 import Author from '../../components/Author';
 import NextPreviousPosts from '../../components/NextPreviousPosts';
-import { getHeader } from '../../FakeServices/heade.server'
+import { getHeader } from '../../Services/heade.server'
 
 let radix = false
 

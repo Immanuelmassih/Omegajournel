@@ -1,12 +1,13 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from '../../components/common/form';
-import { UserLogin } from '../../FakeServices/user.service';
+import * as userService from '../../Services/userService';
+import auth from "../../Services/authService";
 
 class Login extends Form {
 
   state = {
-    data: { email: "", password: "", remember : "" },
+    data: { email: "", password: "", remember : false },
     errors: {}
   };
 
@@ -25,11 +26,20 @@ class Login extends Form {
   };
 
   doSubmit = async () =>  {
-    console.log("Submitted");
-    let users =  await UserLogin()
-    const { data } = this.state
-    let user = users.filter(x => x.email === data.email && data.password)
-    console.log ( user )
+    try {
+      const response = await userService.login(this.state.data)
+      const { data : { response : token, responseCode } } = response
+       if ( responseCode === 200 ) {
+          auth.loginWithJwt(token);
+          window.location.href = "/profile"
+       }
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.username = ex.response.data;
+        this.setState({ errors });
+      }
+    }
   };
 
   render() {

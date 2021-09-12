@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Posts from '../../components/Posts';
-import { getHeader } from '../../FakeServices/heade.server'
-import { CategoriesList, TagsList } from '../../FakeServices/category.servce'
+import { getHeader } from '../../Services/heade.server'
+import { CategoriesList, TagsList } from '../../Services/category.servce'
 import { Link } from "react-router-dom";
 
 let radix = false

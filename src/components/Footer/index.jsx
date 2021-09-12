@@ -1,10 +1,10 @@
 import React from  'react';
 import Member from '../Member';
 
-const Footer = () =>  {
+const Footer = ({User}) =>  {
    return (
      <React.Fragment>
-         <Member />
+         {!User && <Member/>}
          <footer className="footer">
             <div className="container-fluid">
                 <div className="row">

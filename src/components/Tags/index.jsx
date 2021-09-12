@@ -11,8 +11,8 @@ const Tags = ({Tag}) => {
 	        <div className="widget-tags">
 	            <ul className="list-inline">
 	            {Tag.map(tag => (
-	            	<li key={tag.id}>
-	                    <Link to={`/blog/${tags}/${tag.id}`}>{tag.name}</Link>
+	            	<li key={tag._id}>
+	                    <Link to={`/blog/${tags}/${tag._id}`}>{tag.name}</Link>
 	                </li>
 	            	))}
 	            </ul>

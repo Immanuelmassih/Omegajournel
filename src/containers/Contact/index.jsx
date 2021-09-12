@@ -1,7 +1,7 @@
 import React from "react";
 import Form from '../../components/common/form';
+import * as contact from '../../Services/contact.service';
 import Joi from "joi-browser";
-
 class Contact extends Form {
 
   state = {
@@ -25,9 +25,9 @@ class Contact extends Form {
       .label("Message")
   };
 
-  doSubmit = () => {
-    console.log("Submitted");
-    console.log ( this.state.data )
+  doSubmit = async () => {
+    let response = await contact.sendEmail( this.state.data )
+    console.log( response );
   };
 
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Joi from "joi-browser";
 import Form from '../../components/common/form';
+import * as userService from '../../Services/userService';
 
 class ForgotPassword extends Form {
 
@@ -16,10 +17,12 @@ class ForgotPassword extends Form {
       .label("Email")
   };
 
-  doSubmit = () => {
-    console.log("Submitted");
-    console.log ( this.state.data )
+  doSubmit = async () => {
+    const response = await userService.forgot(this.state.data)
+    console.log(response.data);
   };
+
+
 
   render() {
   	return (

@@ -1,6 +1,8 @@
 import React , { Component } from "react";
-import * as paymentService from '../../FakeServices/paymentService';
-import { getPlans } from '../../FakeServices/subscriptionPlan.service';
+import * as paymentService from '../../Services/paymentService';
+import { getPlans } from '../../Services/subscriptionPlan.service';
+import { getCurrentUser } from '../../Services/authService';
+
 export class Subscription extends Component {
 
    state = {
@@ -65,6 +67,8 @@ export class Subscription extends Component {
                     razorpayPaymentId: response.razorpay_payment_id,
                     razorpayOrderId: response.razorpay_order_id,
                     razorpaySignature: response.razorpay_signature,
+                    package : item._id,
+                    email : getCurrentUser().email
                 };
 
                 const result = await paymentService.Success(data)

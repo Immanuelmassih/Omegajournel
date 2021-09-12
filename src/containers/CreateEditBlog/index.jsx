@@ -1,17 +1,36 @@
 import React  from 'react';
 import Joi from "joi-browser";
 import Form from '../../components/common/form';
+import { categoryList } from '../../Services/category.servce';
+import { tagList } from '../../Services/tag.service';
+import { create, Upload } from '../../Services/posts.service';
+import { getCurrentUser } from '../../Services/authService';
 
 class CreateEditBlog extends Form {
 
   state = {
-  	categories : [{ _id : 1, name : "React"},{ _id : 2, name : "Angular"},{ _id : 3, name : "Vue" }], 
-  	tags : [{ _id : 1, name : "React"},{ _id : 2, name : "Angular"},{ _id : 3, name : "Vue" }], 
-    data: { title : "", image : "", category : "", tag : "", description : "" },
-    errors: {}
-  };
+  	categories : [], 
+  	tags       : [], 
+    data       : { status: false, title : "", image : "", category : "", tag : "", description : "", authorId : getCurrentUser()._id, author : getCurrentUser().name },
+    errors     : {}
+  }
+
+  async componentDidMount() {
+    await this.categories();
+  }
+
+  async categories() {
+    const { data } = await categoryList()
+    let response = await tagList()
+    this.setState({ categories : data })
+    this.setState({ tags : response.data })
+  }
 
   schema = {
+    authorId: Joi.string(),
+    author: Joi.string(),
+    status : Joi.boolean()
+      .label("Make post Private"),
     title: Joi.string()
       .required()
       .label("Post Title"),
@@ -29,9 +48,11 @@ class CreateEditBlog extends Form {
        .label("Post Description")
   };
 
-  doSubmit = () => {
-    console.log("Submitted");
-    console.log ( this.state.data )
+  doSubmit = async () => {
+    let response  = await create(this.state.data)
+    let imgUpload = await Upload(this.state)
+    console.log ( response )
+    console.log ( imgUpload )
   };
 
   handleEditorChange = ( e ) => {
@@ -53,10 +74,11 @@ class CreateEditBlog extends Form {
 	          <div className="col-lg-12 mt-30">
 		          <div className="contact">
 		              <form onSubmit={this.handleSubmit} className="sign-form widget-form ">
+                    {this.renderCheckbox("status", "Make post private")}
 		                {this.renderInput("title", "Post Title")}
 		                {this.renderInput("image", "Post Image", "file", "form-control custom_select")}
 		                {this.renderSelect("category", "Post Category", this.state.categories)}
-		                {this.renderSelect("tag", "Tag Category", this.state.tags)}
+		                {this.renderSelect("tag", "Post Tag", this.state.tags)}
                     {this.renderWYSWYG("description", "Messgae")}
 		                {this.renderButton("Save")}
 		              </form>

@@ -4,20 +4,33 @@ import Posts from '../../components/Posts'
 import Latest from '../../components/Latest'
 import Categories from '../../components/Categories'
 import Tags from '../../components/Tags'
-import { getHeader } from '../../FakeServices/heade.server'
-import { CategoriesList, TagsList } from '../../FakeServices/category.servce'
-import { getLatest } from '../../FakeServices/latest.service'
-import { getPosts } from '../../FakeServices/posts.service'
+import { categoryList } from '../../Services/category.servce';
+import { tagList } from '../../Services/tag.service';
+import { getLatest } from '../../Services/latest.service'
+import { carousel, getPosts } from '../../Services/posts.service'
 
 class Home extends Component {
 
 	state = {
-		slider     : getHeader(),
-		categories : CategoriesList(),
-		tags       : TagsList(),
+		slider     : [],
+		categories : [],
+		tags       : [],
 		latest     : getLatest(),
 		posts      : getPosts()
 	}
+
+   async componentDidMount() {
+    await this.getCatTags();
+   } 
+
+   async getCatTags () {
+   	 let cat       = await categoryList()
+   	 let tag       = await tagList()
+   	 let { data : { response } }  = await carousel()
+   	 this.setState({categories : cat.data })
+   	 this.setState({tags       : tag.data })
+	 this.setState({slider     : response })
+   }
 
 	render() {
 	  return (
