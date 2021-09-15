@@ -2,14 +2,31 @@ import React, { Component } from 'react';
 import Comments from '../../components/Comments/'
 import Author from '../../components/Author';
 import NextPreviousPosts from '../../components/NextPreviousPosts';
-import { getHeader } from '../../Services/heade.server'
-
-let radix = false
+import { getDetail } from '../../Services/posts.service'
 
 class BlogDetail extends Component {
     state = {
-        detail : getHeader().find(x => x.id === parseInt(this.props.match.params.id, radix))
+        detail : []
     }
+
+   async componentDidMount() {
+    await this.getPost();
+   }
+
+   async getPost () {
+     let { data : { response } } = await getDetail(this.props.match.params.id);
+     response.map(x => {
+        if ( x.date ) {
+            let postDate = new Date(x.date)
+            let Day   = postDate.getDate()
+            let Month = postDate.getMonth() + 1
+            let Year  = postDate.getFullYear()
+            x.date = `${Day}/${Month}/${Year}`
+        }
+        return null
+     })
+     this.setState({ detail : response })
+   }
 
     render() {
     	return (
@@ -17,113 +34,51 @@ class BlogDetail extends Component {
     	     <div className="container">
                 <div className="row">
     	            <div className="col-lg-10 offset-lg-1 mb-20">
-    	            <div className="post-single">
-                            <div className="post-single-image">
-                                <img src={this.state.detail.image} alt="BlogImage"/ >
+                    { this.state.detail.length > 0 && this.state.detail.map(post => (
+                        <div className="post_detail" key={post._id}>
+                          <div className="post-single">
+                              <div className="post-single-image">
+                                <img src="https://noonpost.netlify.app/html/template/assets/img/hero/1.jpg" alt="BlogImage"/ >
                             </div>
                             <div className="post-single-content">
                                 <a href="blog-grid.html
-                                " className="categorie">{this.state.detail.category}</a> 
-                                <h4>{this.state.detail.title}</h4>
+                                " className="categorie">{post.category_info.name}</a> 
+                                <h4>{post.title}</h4>
                                 <div className="post-single-info">
                                     <ul className="list-inline">
-                                        <li><a href="author.html"><img src={this.state.detail.authorImg} alt="Author" /></a>
+                                        <li>
+                                            <img src="https://noonpost.netlify.app/html/template/assets/img/author/1.jpg" alt="Author" />
                                         </li>
-                                        <li><a href="author.html">{this.state.detail.author}</a> </li>
+                                        <li><a href="author.html">{post.authorName}</a> </li>
                                         <li className="dot"></li>
-                                        <li>{this.state.detail.date}</li>
+                                        <li>{post.date}</li>
                                         <li className="dot"></li>
                                         <li>3 comments</li>
                                     </ul>
                                 </div>
                             </div>
-                      
                             <div className="post-single-body">
-                                <p>
-                                    Its sometimes her behaviour are contented. Do listening am eagerness oh objection collected. Together gay feelings continue
-                                    juvenile had off Unknown may service 
-                                    subject her letters one bed. Child years noise ye in forty. Loud in this in both
-                                    hold. My entrance me is disposal bachelor remember relation
-                                </p>
-                                <h5> 1 - Pick a sustainable travel destination </h5>
-
-                                <p>
-                                    Oh acceptance apartments up sympathize astonished delightful. Waiting him new lasting towards. Continuing melancholy especially
-                                    so to. Me unpleasing  impossible in attachment announcing so astonished. What ask leaf may nor upon door. Tended remain
-                                    my do stairs. Oh smiling amiable am so visited cordial in offices hearted.
-                                </p>
-                                <p>
-                                    Oh acceptance apartments up sympathize astonished delightful. Waiting him new lasting towards. Continuing melancholy especially
-                                    so to. Me unpleasing impossible in attachment announcing so astonished. What ask leaf may nor upon door. Tended remain
-                                    my do stairs. Oh smiling amiable am so visited cordial in offices hearted.
-                                </p>
-
-                                <p> Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                                    in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                                    in culpa qui officia
-                                    deserunt mollit anim id est laborum.
-                                </p>
-                                <h5>2 -  Research before booking</h5>
-                            
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                                    cupidatat non proident.
-                                </p>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor Unknown may service in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                                    cupidatat non proident.
-                                </p>
-                                <h5>3 - Pack light , Easy Sustainable Travel Tip</h5>
-                                
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                                    cupidatat non proident.
-                                &gt;sunt in culpa qui officia deserunt mollit anim id e st laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                    do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam.
-                                </p>
-                              
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                                    cupidatat non proident.
-                                </p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                </p>
+                                 <div  dangerouslySetInnerHTML={{__html: post.content}} />
                             </div>
-
-                            <div className="post-single-footer">
+                             <div className="post-single-footer">
                                 <div className="tags">
                                     <ul className="list-inline">
-                                        <li>
-                                            <a href="blog-grid.html">Travel</a>
-                                        </li>
-                                        <li>
-                                            <a href="blog-grid.html">Nature</a>
-                                        </li>
-                                        <li>
-                                            <a href="blog-grid.html">tips</a>
-                                        </li>
-                                        <li>
-                                            <a href="blog-grid.html">forest</a>
-                                        </li>
-                                        <li>
-                                            <a href="blog-grid.html">beach</a>
-                                        </li>
-                                    
+                                        {post.tag_Info.map(tag => (
+                                            <li key={tag._id}>
+                                                <a href="blog-grid.html">{tag.name}</a>
+                                            </li>
+                                         ))}
                                     </ul>
                                 </div>                         
                             </div>
+                          </div>
+                            <Author Profile={false} />
+                            <NextPreviousPosts catId={post.category_info._id} />
+                            <Comments postId={post._id} />
                         </div>
-                        <Author Profile={false} />
-                        <NextPreviousPosts />
-    		            <Comments />
-    	            </div>
+                        ))
+                     }
+                    </div>
                 </div>
              </div>
            </section>

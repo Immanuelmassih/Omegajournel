@@ -40,16 +40,17 @@ class Form extends Component {
   };
 
   handleChange = ({ currentTarget: input }) => {
-    const errors = { ...this.state.errors };
-    const errorMessage = this.validateProperty(input);
-    if (errorMessage) errors[input.name] = errorMessage;
+
+    const errors = { ...this.state.errors }
+    const errorMessage = this.validateProperty(input)
+    if (errorMessage) errors[input.name] = errorMessage
     else delete errors[input.name];
 
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
+    const data = { ...this.state.data }
+    data[input.name] = input.value
+    this.setState({ data, errors })
 
-    this.setState({ data, errors });
-  };
+  }
 
   handleCheckBox = ( e ) => {
     let { name, checked : value } = e.target

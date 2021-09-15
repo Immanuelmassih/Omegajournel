@@ -1,57 +1,19 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
 
-const createPost  = apiUrl + "/post/add";
-const uploadImage = apiUrl + "/post/uploadImage";
-const sliderPost  = apiUrl + "/post/slider";
-const viewPost    = apiUrl + "/post/detail/";
-const catPosts    = apiUrl + "/post/category/";
-const tagPosts    = apiUrl + "/post/tag/";
-const latesPosts  = apiUrl + "/post/latest";
-const relatePost  = apiUrl + "/post/related/";
+const postComment  = apiUrl + "/comment/add";
+const getComments  = apiUrl + "/comment/post/";
 
-export function create(post) {
-  return http.post(createPost, {
-  	title : post.title,
-  	image :  post.image.name,
-  	category : post.category,
-  	tags : post.tag,
-  	private : post.status,
-  	content : post.description,
-  	author : post.authorId,
-  	authorName : post.author
+export function CommentPost (comment) {
+  return http.post(postComment, {
+  	postId : comment.postId,
+  	author : comment.author,
+  	comment: comment.comment
   });
 }
 
-export function Upload( Image ) {
-	const config = {headers: {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9','Cache-Control': 'max-age=0','Cookie': document.cookie}}
-  let data = new FormData();
-  data.append('image', Image);
-  return http.post(uploadImage,data,config);
-}
-
-export function carousel ( ) {
-	return http.get(sliderPost)
-}
-
-export function getDetail ( id ) {
-	return http.get(`${viewPost}${id}`)
-}
-
-export function getCategoryPosts ( id ) {
-	return http.get(`${catPosts}${id}`)
-}
-
-export function getTagPosts ( id ) {
-	return http.get(`${tagPosts}${id}`)
-}
-
-export function latestPost (  ) {
-	return http.get(latesPosts)
-}
-
-export function relatedPost ( id ) {
-	return http.get(`${relatePost}${id}`)
+export function PostComments (id) {
+  return http.get(`${getComments}${id}`);
 }
 
 export const posts = [

@@ -1,17 +1,26 @@
 import React, { Component } from "react";
 import Posts from '../../components/Posts';
-import { getHeader } from '../../Services/heade.server'
-import { CategoriesList, TagsList } from '../../Services/category.servce'
+import { categoryDetails } from '../../Services/category.servce'
 import { Link } from "react-router-dom";
 
-let radix = false
 
 export class Blog extends Component {
 		
 		state = {
-			blogSortPost : this.Posts().detail,
-			posts : this.Posts().posts
+			blogSortPost : [],
 		}
+
+	   async componentDidMount() {
+	    await this.getCategory();
+	   }
+
+	   async getCategory () {
+	   	if ( this.match ) {
+	   	  let { data : { response } } = await categoryDetails(this.props.match.params.id)
+	   	  this.setState({ blogSortPost :  response})
+	   	}
+	   }
+
 
 	render() {
 		  return (
@@ -20,22 +29,24 @@ export class Blog extends Component {
 			        <div className="container-fluid">
 			            <div className="row">
 			                <div className="col-lg-8">
-				                {this.state.blogSortPost  ? 
-			                    <div className="categorie-title"> 
-			                         <small>
-			                            <Link to="/">Home</Link>
-			                            <span className="arrow_carrot-right"></span> {this.state.blogSortPost.name}
-			                        </small>
-			                        <h3>{this.getType()} : <span> {this.state.blogSortPost.name}</span></h3>
-			                        <p> {this.state.blogSortPost.description} </p>
-			                    </div>: null }
+				                {this.state.blogSortPost.length > 0 && this.state.blogSortPost.map(blog => (
+				                    <div className="categorie-title" key={blog._id}> 
+				                         <small>
+				                            <Link to="/">Home</Link>
+				                            <span className="arrow_carrot-right"></span> {blog.name}
+				                        </small>
+				                        <h3>{this.getType()} : <span> {blog.name}</span></h3>
+				                        <p>Lorem ipsum, dolor sit amet consectetur, adipisicing elit. Minima, mollitia? </p>
+				                    </div>
+				                  ))
+			                     }
 			                </div>
 			            </div>
 			        </div>
 			    </section> 
 			  	<section className="categorie-section">
 			  		<div className="container-fluid">
-			  			<Posts Post={this.state.posts} />
+			  			<Posts Post={this.props.match.params} from={2} />
 			  		</div>
 			  	</section>
 			</React.Fragment>
@@ -52,27 +63,6 @@ export class Blog extends Component {
 		  					return ''
 		  	}
 		  }
-
-		  Posts () {
-		  	switch(this.props.match.params.type) {
-		  			case "category" :
-		  				return {
-		  					detail : CategoriesList().find(x => x.id === parseInt(this.props.match.params.id, radix)),
-		  					posts  : getHeader()	
-		  				} 
-		  			case "tag" : 
-		  				return {
-		  					detail : TagsList().find(x => x.id === parseInt(this.props.match.params.id, radix)),
-		  					posts : getHeader()
-		  				} 
-						 default : 
-		  					return {
-		  						detail : null,
-		  						posts : getHeader()
-		  					}
-		  	}
-		  }
-
 	}
 
 

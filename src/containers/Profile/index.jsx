@@ -1,15 +1,24 @@
 import React, { Component } from "react";
 import Posts from '../../components/Posts';
 import Author from '../../components/Author';
-import { getPosts } from '../../Services/posts.service';
-import { getCurrentUser } from '../../Services/authService';
+import { getCurrentUser, getDetail } from '../../Services/authService';
 
 class Profile extends Component {
 
 		state = {
-			posts      : getPosts(),
-			user       : getCurrentUser()
+			user       : []
 		}
+
+	async componentDidMount() {
+      await this.getUserDetail();
+   }
+
+
+	async getUserDetail ( ) {
+		let { _id } = getCurrentUser()
+		let { data : { response } } = await getDetail(_id)
+		this.setState({ user : response })
+	}
 
 	render() {
 	  return (
@@ -23,7 +32,7 @@ class Profile extends Component {
 		  		<div className="container-fluid">
 		  		<div className="row">
 		  		<div className="col-lg-12 mt-30">
-		  			<Posts Post={this.state.posts} />
+		  			<Posts Post={this.state.posts} from={3} />
 		  		</div>
 		  		</div>
 		  		</div>

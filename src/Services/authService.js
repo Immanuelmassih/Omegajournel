@@ -3,6 +3,7 @@ import http from "./httpService";
 import { apiUrl } from "../config.json";
 
 const apiEndpoint = apiUrl + "/auth";
+const userDetails = apiUrl + "/user/userDetail/";
 const tokenKey = "token";
 
 http.setJwt(getJwt());
@@ -19,6 +20,10 @@ export function loginWithJwt(jwt) {
 export function logout() {
   localStorage.removeItem(tokenKey);
   window.location.href = "/"
+}
+
+export function getDetail ( id ) {
+  return http.get(`${userDetails}${id}`)
 }
 
 export function getCurrentUser() {

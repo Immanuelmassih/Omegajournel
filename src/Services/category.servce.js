@@ -1,10 +1,15 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
 
-const category = apiUrl + "/category/";
+const category       = apiUrl + "/category/";
+const categoryDetail = apiUrl + "/category/detail/";
 
 export function categoryList ( ) {
   return http.get(category);
+}
+
+export function categoryDetails ( id ) {
+  return http.get(`${categoryDetail}${id}`);
 }
 
 export const categories = [
