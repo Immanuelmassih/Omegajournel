@@ -45,7 +45,7 @@ export class Subscription extends Component {
             return;
         }
 
-        const result = await paymentService.Order()
+        const result = await paymentService.Order(item)
 
         if (!result) {
             alert("Server error. Are you online?");
@@ -68,13 +68,14 @@ export class Subscription extends Component {
                     razorpayOrderId: response.razorpay_order_id,
                     razorpaySignature: response.razorpay_signature,
                     package : item._id,
-                    email : getCurrentUser().email
+                    _id : getCurrentUser()._id
                 };
-
-                const result = await paymentService.Success(data)
+                const { data : { token } } = await paymentService.Success(data)
+                localStorage.setItem("token", token);
+                window.location.href = `${window.location.origin}/profile`
                 //const result = await axios.post("http://localhost:5000/payment/success", data);
 
-                alert(result.data.msg);
+                //alert(result.data.msg);
             },
             prefill: {
                 name: "Emanuel",

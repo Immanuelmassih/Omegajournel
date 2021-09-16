@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from "react-router-dom";
-import auth, { getCurrentUser , getDetail} from "../../Services/authService";
+import auth, { getCurrentUser , getDetail } from "../../Services/authService";
 
 class Author extends Component {
 
@@ -12,8 +12,8 @@ class Author extends Component {
 		user : []
 	}
 
-	 async getUserDetail ( ) {
-	 	console.log ( this.props )
+	async getUserDetail ( ) {
+		console.log ( getCurrentUser() )
 		let { _id } = getCurrentUser()
 		let { data : { response } } = await getDetail(_id)
 		this.setState({ user : response })
@@ -24,7 +24,6 @@ class Author extends Component {
    }
 
 	render() {
-	
 		let classes = this.getProfileBackground()
 		return (
 			<div className="row">
@@ -32,6 +31,7 @@ class Author extends Component {
 					<div className="col-lg-12" key={user._id}>
 						<div className={classes}>
 							<Link to="/profile" className="image">
+								<div className="uploadAvatar"><Link to={`/editProfile/${user._id}`}><i className="fas fa-edit"></i></Link></div>
 							   <img src="https://noonpost.netlify.app/html/template/assets/img/author/1.jpg" alt="author" />
 							</Link>
 							<h6><span>Hi, I'm {user.name}</span></h6>

@@ -11,6 +11,7 @@ import ForgotPassword from './containers/ForgotPassword';
 import CreateEditBlog from './containers/CreateEditBlog';
 import ResetAccount from './containers/ResetAccount';
 import BlogDetail from './containers/BlogDetail';
+import EditProfile from './containers/EditProfile';
 import NotFound from './containers/NotFound';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -38,6 +39,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/profile" component={Profile} />
+            <Route path="/editProfile/:id" component={EditProfile} />
             <Route path="/subscription" component={Subscription} />
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/reset-account/:id" component={ResetAccount} />

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from "react-router-dom"
 import Pagination from '../common/paginate'
 import { paginate } from '../../utils/pagination.js'
-import { carousel, getCategoryPosts, getTagPosts } from '../../Services/posts.service'
+import { carousel, getCategoryPosts, getTagPosts, deleteElectedPost } from '../../Services/posts.service'
 export class Posts extends Component  {
 
    state = {
@@ -22,10 +22,18 @@ export class Posts extends Component  {
 
    async getPosts  ( ) {
    	let { from } = this.props
-   	if ( from === 1 ) {
-	   	let { data : { response } } = await carousel()
-	   	response.map(x => x.date = this.formateDate(x.date))
-	   	this.setState({ data : response })
+   	if ( from === 1 || from === 3 ) {
+	   	if (this.props.Post) {
+	   		this.props.Post[0].postList.map(x => 
+	   		  x['category_info'] = this.props.Post[0].category_info.find(y => y._id === x.category)
+	   		)
+	   		this.props.Post[0].postList.map(x => x.date = this.formateDate(x.date))
+	   		this.setState({ data : this.props.Post[0].postList })
+	   	} else {
+		   	let { data : { response } } = await carousel()
+		   	response.map(x => x.date = this.formateDate(x.date))
+		   	this.setState({ data : response })
+	   	}
    	}
    	if ( from === 2 ) {
    		let { type } = this.props.Post
@@ -59,16 +67,18 @@ export class Posts extends Component  {
 
 
   getPagedData = () => {
-    const {
-      pageSize,
-      currentPage,
-      data
-    } = this.state;
-    
-    const postsList = paginate(data, currentPage, pageSize);
-    return { postsList };
-   };
+    const { pageSize, currentPage, data } = this.state
+    const postsList = paginate(data, currentPage, pageSize)
+    return { postsList }
+   }
 
+   deletePost = async (id) => {
+   	let { data : { responseCode } } = await deleteElectedPost(id)
+   	if ( responseCode === 200 ) {
+	   	let remainingPosts = this.state.data.filter(x => x._id !== id)
+	   	this.setState({ data : remainingPosts })
+   	}
+   }
 
 	render () {
 		const { postsList }	= this.getPagedData()
@@ -100,6 +110,7 @@ export class Posts extends Component  {
 			                        </li>
 			                        <li className="dot"></li>
 			                        <li>{blog.date}</li>
+			                        {this.props.from === 3 && <li onClick={() => this.deletePost(blog._id)}><i className="fas fa-trash-alt ml-2"></i></li>}
 			                    </ul>
 			                </div>
 			            </div>

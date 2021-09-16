@@ -13,7 +13,6 @@ class Profile extends Component {
       await this.getUserDetail();
    }
 
-
 	async getUserDetail ( ) {
 		let { _id } = getCurrentUser()
 		let { data : { response } } = await getDetail(_id)
@@ -32,7 +31,7 @@ class Profile extends Component {
 		  		<div className="container-fluid">
 		  		<div className="row">
 		  		<div className="col-lg-12 mt-30">
-		  			<Posts Post={this.state.posts} from={3} />
+		  			{this.state.user.length > 0 && <Posts Post={this.state.user} from={3} />}
 		  		</div>
 		  		</div>
 		  		</div>

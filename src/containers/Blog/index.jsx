@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Posts from '../../components/Posts';
 import { categoryDetails } from '../../Services/category.servce'
+import { tagDetails } from '../../Services/tag.service'
 import { Link } from "react-router-dom";
 
 
@@ -15,8 +16,12 @@ export class Blog extends Component {
 	   }
 
 	   async getCategory () {
-	   	if ( this.match ) {
+	   	if ( this.props.match.params.type === "category"  ) {
 	   	  let { data : { response } } = await categoryDetails(this.props.match.params.id)
+	   	  this.setState({ blogSortPost :  response})
+	   	}
+	   	if ( this.props.match.params.type === "tag"  ) {
+	   	  let { data : { response } } = await tagDetails(this.props.match.params.id)
 	   	  this.setState({ blogSortPost :  response})
 	   	}
 	   }

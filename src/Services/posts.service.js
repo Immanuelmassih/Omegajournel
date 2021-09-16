@@ -9,6 +9,7 @@ const catPosts    = apiUrl + "/post/category/";
 const tagPosts    = apiUrl + "/post/tag/";
 const latesPosts  = apiUrl + "/post/latest";
 const relatePost  = apiUrl + "/post/related/";
+const deletePost  = apiUrl + "/post/delete/";
 
 export function create(post) {
   return http.post(createPost, {
@@ -52,6 +53,10 @@ export function latestPost (  ) {
 
 export function relatedPost ( id ) {
 	return http.get(`${relatePost}${id}`)
+}
+
+export function deleteElectedPost ( id ) {
+	return http.get(`${deletePost}${id}`)
 }
 
 export const posts = [

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Comments from '../../components/Comments/'
 import Author from '../../components/Author';
 import NextPreviousPosts from '../../components/NextPreviousPosts';
-import { getDetail } from '../../Services/posts.service'
-
+import { getDetail } from '../../Services/posts.service';
+import { getCurrentUser } from "../../Services/authService";
 class BlogDetail extends Component {
     state = {
         detail : []
@@ -25,7 +25,9 @@ class BlogDetail extends Component {
         }
         return null
      })
-     this.setState({ detail : response })
+     if ( response.length > 0 ) {
+       this.setState({ detail : response })
+     }
    }
 
     render() {
@@ -72,9 +74,9 @@ class BlogDetail extends Component {
                                 </div>                         
                             </div>
                           </div>
-                            <Author Profile={false} />
+                            {getCurrentUser() && <Author Profile={false} />}
                             <NextPreviousPosts catId={post.category_info._id} />
-                            <Comments postId={post._id} />
+                            {getCurrentUser() && <Comments postId={post._id} />}
                         </div>
                         ))
                      }
